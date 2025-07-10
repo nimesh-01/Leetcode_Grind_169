@@ -1,0 +1,85 @@
+
+//2
+var addTwoNumbers = function (l1, l2) {
+    let carry = 0
+    let dummy = new ListNode(-1)
+    let temp = dummy
+    while (l1 != null || l2 != null || carry != 0) {
+        let val1 = (l1 != null) ? l1.val : 0
+        let val2 = (l2 != null) ? l2.val : 0
+        let val = val1 + val2 + carry;
+        carry = Math.floor(val / 10)
+        let newNode = new ListNode(val % 10)
+        temp.next = newNode
+        temp = temp.next
+        if (l1 != null) l1 = l1.next
+        if (l2 != null) l2 = l2.next
+    }
+    return dummy.next
+};
+
+//24
+var swapPairs = function (head) {
+    if (head == null || head.next == null) return head;
+    let dummy = new ListNode(0)
+    dummy.next = head
+    let prev = dummy
+    let cur = head
+
+    while (cur != null && cur.next != null) {
+        let s1 = cur;
+        let s2 = cur.next
+        let nextpair = cur.next.next
+        prev.next = s2
+        s2.next = s1
+        s1.next = nextpair
+
+        prev = s1
+        cur = nextpair
+    }
+    return dummy.next;
+};
+
+//19
+var removeNthFromEnd = function (head, n) {
+    if (head == null) return null
+    let cur = head
+    let size = 0
+    while (cur != null) {
+        size++
+        cur = cur.next
+    }
+     if (n === size) {
+        return head.next;
+    }
+    cur = head
+    for (let i = 0; i < (size - n - 1); i++) {
+        cur = cur.next
+    }
+    if (cur.next &&cur.next.next) {
+        cur.next = cur.next.next
+    }else{
+        cur.next=null
+    }
+    return head
+};
+
+// 20
+var isValid = function (s) {
+        if(s.length%2!=0) return false
+        let stack=[]
+        for(let i=0;i<s.length;i++){
+            val=s.charAt(i)
+            if(val=="{" || val == '['|| val == '('){
+                stack.push(val)
+            }
+            else{
+                let poped=stack.pop()
+                if(val==']' && poped=='[') {}
+                else if(val=='}' && poped=='{') {}
+                else if(val==')' && poped=='(') {}
+                else {return false}
+            }
+        }
+        return stack.length==0
+};
