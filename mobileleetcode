@@ -1,85 +1,60 @@
 
-//2
-var addTwoNumbers = function (l1, l2) {
-    let carry = 0
-    let dummy = new ListNode(-1)
-    let temp = dummy
-    while (l1 != null || l2 != null || carry != 0) {
-        let val1 = (l1 != null) ? l1.val : 0
-        let val2 = (l2 != null) ? l2.val : 0
-        let val = val1 + val2 + carry;
-        carry = Math.floor(val / 10)
-        let newNode = new ListNode(val % 10)
-        temp.next = newNode
-        temp = temp.next
-        if (l1 != null) l1 = l1.next
-        if (l2 != null) l2 = l2.next
+//160
+var getIntersectionNode = function(headA, headB) {
+     if(headA==null || headB==null) return null
+    
+    let p1=headA
+    let p2=headB
+    
+    while(p1 !== p2){
+        p1=p1==null ? headB:p1.next
+        p2=p2==null ? headA:p2.next
     }
-    return dummy.next
-};
-submitted 
-//24
-var swapPairs = function (head) {
-    if (head == null || head.next == null) return head;
-    let dummy = new ListNode(0)
-    dummy.next = head
-    let prev = dummy
-    let cur = head
-
-    while (cur != null && cur.next != null) {
-        let s1 = cur;
-        let s2 = cur.next
-        let nextpair = cur.next.next
-        prev.next = s2
-        s2.next = s1
-        s1.next = nextpair
-
-        prev = s1
-        cur = nextpair
-    }
-    return dummy.next;
+    return p1;
 };
 
-//19
-var removeNthFromEnd = function (head, n) {
-    if (head == null) return null
-    let cur = head
-    let size = 0
-    while (cur != null) {
-        size++
-        cur = cur.next
+//46
+   var solve = function(nums, ans, current, isVis, i) {
+    if (i === nums.length) {
+        ans.push([...current]);  
+        return;
     }
-     if (n === size) {
-        return head.next;
-    }
-    cur = head
-    for (let i = 0; i < (size - n - 1); i++) {
-        cur = cur.next
-    }
-    if (cur.next &&cur.next.next) {
-        cur.next = cur.next.next
-    }else{
-        cur.next=null
-    }
-    return head
-};
 
-// 20
-var isValid = function (s) {
-        if(s.length%2!=0) return false
-        let stack=[]
-        for(let i=0;i<s.length;i++){
-            val=s.charAt(i)
-            if(val=="{" || val == '['|| val == '('){
-                stack.push(val)
-            }
-            else{
-                let poped=stack.pop()
-                if(val==']' && poped=='[') {}
-                else if(val=='}' && poped=='{') {}
-                else if(val==')' && poped=='(') {}
-                else {return false}
-            }
+    for (let j = 0; j < nums.length; j++) {
+        if (!isVis[j]) {
+            isVis[j] = true;                     
+            current.push(nums[j]);                
+            solve(nums, ans, current, isVis, i+1); 
+            isVis[j] = false;
+            current.pop();                      
         }
-        return stack.length==0
+    }
 };
+
+var permute = function(nums) {
+    let ans = [];
+    let cur = [];
+    let isVis = new Array(nums.length).fill(false); 
+    solve(nums, ans, cur, isVis, 0);
+    return ans;
+};
+
+//90
+ var solve = function (nums, ans, cur, i) {
+    if (i == nums.length) {
+        ans.push([...cur])
+        return
+    }
+    cur.push(nums[i])
+    solve(nums, ans, cur, i + 1)
+    cur.pop()
+    while(i+1<nums.length && nums[i]==nums[i+1]) {i++}
+    solve(nums, ans, cur, i + 1)
+}
+var subsetsWithDup = function(nums) {
+    let ans = []
+    let cur = []
+    solve(nums, ans, cur, 0)
+    return ans
+};
+
